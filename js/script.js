@@ -25,9 +25,21 @@ const renderPokemon = async (pokemon) => {
     const data = await fetchPokemon(pokemon);
 
     if(data){
+        pokemonImage.style.display = 'block';
         pokemonName.innerHTML = data.name;
         pokemonNumber.innerHTML = data.id;
-        pokemonImage.src = data['sprites']['versions']['generation-v']['black-white']['animated']['front_default'];
+
+        if(data['sprites']['versions']['generation-v']['black-white']['animated']['front_default']){
+            pokemonImage.src = data['sprites']['versions']['generation-v']['black-white']['animated']['front_default'];
+        }
+
+        /* A partir do pokemon 650 ainda nao existe imagens gif para os pokemons, verificacao realizada para
+            mostrar o pokemon sem animacao.
+        */
+
+        else{
+            pokemonImage.src = data['sprites']['front_default'];
+        }    
 
         input.value = '';
         searchPokemon = data.id;
@@ -52,12 +64,8 @@ buttonPrev.addEventListener('click', () =>{
 });
 
 buttonNext.addEventListener('click', () =>{
-    if(searchPokemon < 649){
         searchPokemon += 1;
         renderPokemon(searchPokemon);
-    }    
 });
-
-
 
 renderPokemon(searchPokemon);
